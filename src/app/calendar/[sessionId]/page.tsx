@@ -94,7 +94,7 @@ export default function CalendarSession() {
   useEffect(() => {
     if (!showPrompt && username && sessionId) {
       if (!socketRef.current) {
-        socketRef.current = io("http://localhost:4000");
+    socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL);
         socketRef.current.emit("join-session", sessionId);
         socketRef.current.on("refresh-availability", () => {
           fetch(`/api/calendar/${sessionId}/availability`)

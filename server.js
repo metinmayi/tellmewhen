@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
@@ -8,10 +11,15 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 let io;
-
-const NEXT_PORT = process.env.NEXT_PORT ? Number(process.env.NEXT_PORT) : 3000;
-const SOCKET_PORT = process.env.SOCKET_PORT ? Number(process.env.SOCKET_PORT) : 4000;
-const NEXT_URL = process.env.NEXT_URL || `http://localhost:${NEXT_PORT}`;
+if (!process.env.NEXT_PORT || !process.env.SOCKET_PORT || !process.env.NEXT_URL) {
+    console.log('NEXT PORT: ', process.env.NEXT_PORT);
+    console.log('SOCKET PORT: ', process.env.SOCKET_PORT);
+    console.log('NEXT URL: ', process.env.NEXT_URL);
+    throw new Error('Please set the NEXT_PORT, SOCKET_PORT, and NEXT_URL environment variables.');
+}
+const NEXT_PORT = Number(process.env.NEXT_PORT);;
+const SOCKET_PORT = process.env.SOCKET_PORT;
+const NEXT_URL = process.env.NEXT_URL;
 
 app.prepare().then(() => {
   const server = createServer((req, res) => {
