@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { openDb } from "@/lib/db";
 
 // POST: Mark/unmark a date as available for a user in a session (calendar)
-export async function POST(req: NextRequest, { params }: { params: { sessionId: string } }) {
+export async function POST(req: NextRequest, props: { params: Promise<{ sessionId: string }> }) {
+  const params = await props.params;
   const { date, username, available } = await req.json();
   const db = await openDb();
   await db.exec(
@@ -30,7 +31,8 @@ export async function POST(req: NextRequest, { params }: { params: { sessionId: 
 }
 
 // GET: Get all availability for a session (calendar)
-export async function GET(_req: NextRequest, { params }: { params: { sessionId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ sessionId: string }> }) {
+  const params = await props.params;
   const db = await openDb();
   await db.exec(
     `CREATE TABLE IF NOT EXISTS availability (

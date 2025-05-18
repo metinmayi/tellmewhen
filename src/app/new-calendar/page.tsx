@@ -13,7 +13,7 @@ async function createUniqueSession() {
     let data = { available: false };
     try {
       data = await res.json();
-    } catch (e) {
+    } catch {
       // If response is not JSON, treat as unavailable
       data = { available: false };
     }
@@ -23,7 +23,7 @@ async function createUniqueSession() {
       let createData = { success: false };
       try {
         createData = await createRes.json();
-      } catch (e) {
+      } catch {
         createData = { success: false };
       }
       if (createData.success) {

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { openDb } from "@/lib/db";
 
 // GET /api/calendar/[sessionId]/check
-export async function GET(_req: NextRequest, { params }: { params: { sessionId: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ sessionId: string }> }) {
+  const params = await props.params;
   const db = await openDb();
   await db.exec(
     "CREATE TABLE IF NOT EXISTS calendars (id TEXT PRIMARY KEY, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
@@ -13,7 +14,8 @@ export async function GET(_req: NextRequest, { params }: { params: { sessionId: 
 }
 
 // POST /api/calendar/[sessionId]/create
-export async function POST(_req: NextRequest, { params }: { params: { sessionId: string } }) {
+export async function POST(_req: NextRequest, props: { params: Promise<{ sessionId: string }> }) {
+  const params = await props.params;
   const db = await openDb();
   await db.exec(
     "CREATE TABLE IF NOT EXISTS calendars (id TEXT PRIMARY KEY, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
@@ -22,7 +24,7 @@ export async function POST(_req: NextRequest, { params }: { params: { sessionId:
     await db.run("INSERT INTO calendars (id) VALUES (?)", params.sessionId);
     await db.close();
     return NextResponse.json({ success: true });
-  } catch (e) {
+  } catch {
     await db.close();
     return NextResponse.json({ success: false, error: "Calendar already exists" }, { status: 409 });
   }

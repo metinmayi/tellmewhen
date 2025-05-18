@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openDb } from '@/lib/db';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const db = await openDb();
   await db.exec('CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT)');
   const messages = await db.all('SELECT * FROM messages');
