@@ -12,6 +12,7 @@ export default function CalendarSession() {
   const [showPrompt, setShowPrompt] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -178,7 +179,7 @@ export default function CalendarSession() {
     return (
       <div className="grid grid-cols-7 gap-2 sm:gap-4 md:gap-6 mt-4 w-full max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto px-1 sm:px-4 md:px-8">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
-          <div key={day} className="text-center font-semibold text-gray-700 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl">{day}</div>
+          <div key={day} className="text-center font-semibold text-zinc-300 text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl">{day}</div>
         ))}
         {days.map((d, i) => {
           if (!d) return <div key={i} />;
@@ -186,33 +187,37 @@ export default function CalendarSession() {
           const usersForDate = calendar[dateStr] || [];
           const everyoneAvailable = allUsers.length > 0 && usersForDate.length === allUsers.length;
           const isMe = myAvailability.has(dateStr);
-          let colorClass = "bg-white border-gray-300 text-gray-900";
+          const othersSelected = usersForDate.length > 1 && isMe;
+          let colorClass = "bg-zinc-900 border-zinc-700 text-zinc-200";
           if (everyoneAvailable && usersForDate.length > 0) {
-            colorClass = "bg-green-400 text-white border-green-500";
+            colorClass = "bg-emerald-700 text-white border-emerald-800";
           } else if (isMe && usersForDate.length === 1) {
-            colorClass = "bg-blue-400 text-white border-blue-500";
+            colorClass = "bg-sky-700 text-white border-sky-800";
           } else if (isMe && usersForDate.length > 1) {
-            colorClass = "bg-pink-400 text-white border-pink-500";
+            colorClass = "bg-pink-700 text-white border-pink-800";
           } else if (!isMe && usersForDate.length > 0) {
-            colorClass = "bg-pink-400 text-white border-pink-500";
+            colorClass = "bg-pink-700 text-white border-pink-800";
           }
           const tooltip = usersForDate.length > 0 ? usersForDate.join(", ") : "No one selected";
           return (
             <div key={dateStr} className="flex flex-col items-center group relative">
               <button
-                className={`w-9 h-9 sm:w-14 sm:h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded flex items-center justify-center border text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold mb-1 ${colorClass} hover:bg-blue-100 transition relative`}
+                className={`w-9 h-9 sm:w-14 sm:h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded flex items-center justify-center border text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold mb-1 ${colorClass} hover:bg-zinc-700 transition relative`}
                 onClick={() => toggleDate(dateStr)}
                 tabIndex={0}
               >
                 {d}
+                {othersSelected && (
+                  <span className="absolute top-1 left-1 w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-emerald-400 border-2 border-white"></span>
+                )}
                 {usersForDate.length > 0 && (
-                  <span className="absolute bottom-1 right-1 bg-gray-900 bg-opacity-80 text-white text-[10px] sm:text-xs rounded-full px-1.5 py-0.5 leading-none pointer-events-none">
+                  <span className="absolute bottom-1 right-1 bg-zinc-900 bg-opacity-80 text-white text-[10px] sm:text-xs rounded-full px-1.5 py-0.5 leading-none pointer-events-none">
                     {usersForDate.length}
                   </span>
                 )}
               </button>
               {usersForDate.length > 0 && (
-                <div className="absolute z-10 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block group-focus-within:block bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow-lg pointer-events-none">
+                <div className="absolute z-10 bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block group-focus-within:block bg-zinc-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap shadow-lg pointer-events-none">
                   {tooltip}
                 </div>
               )}
@@ -225,20 +230,20 @@ export default function CalendarSession() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-[#f9f6f1]">
-        <p className="text-lg text-gray-600">Loading...</p>
+      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
+        <p className="text-lg text-gray-300">Loading...</p>
       </main>
     );
   }
 
   if (notFound) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-[#f9f6f1]">
+      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
         <div className="w-full max-w-xs text-center">
-          <h2 className="text-2xl font-bold mb-2 text-red-700">Calendar Not Found</h2>
-          <p className="mb-6 text-gray-700">This calendar session does not exist.</p>
+          <h2 className="text-2xl font-bold mb-2 text-red-500">Calendar Not Found</h2>
+          <p className="mb-6 text-zinc-300">This calendar session does not exist. Sessions get deleted after 7 days.</p>
           <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
+            className="bg-sky-700 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-sky-600 border border-sky-800 transition"
             onClick={() => router.push("/")}
           >
             Home
@@ -249,42 +254,60 @@ export default function CalendarSession() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-[#f9f6f1]">
+    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
       <div className="absolute top-4 left-4">
-        <Link href="/" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition text-sm">Home</Link>
+        <Link href="/" className="bg-zinc-800 text-zinc-100 px-4 py-2 rounded-lg font-semibold shadow hover:bg-zinc-700 border border-zinc-600 transition text-sm">Home</Link>
       </div>
       {showPrompt ? (
         <form onSubmit={handleSetUsername} className="flex flex-col gap-4 w-full max-w-xs">
           <input
-            className="border rounded px-4 py-2 text-lg"
+            className="border border-zinc-600 bg-zinc-800 text-zinc-100 rounded px-4 py-2 text-lg placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-sky-700"
             placeholder="Enter your name"
             value={input}
             onChange={e => setInput(e.target.value)}
             required
           />
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition" type="submit">
+          <button className="bg-emerald-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow hover:bg-emerald-600 border border-emerald-800 transition" type="submit">
             Join Session
           </button>
         </form>
       ) : (
         <div className="w-full max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl text-center mx-auto">
-          <h2 className="text-2xl font-bold mb-2">Welcome, {username}!</h2>
-          <p className="mb-6 text-gray-700">Session code: <span className="font-mono bg-gray-100 px-2 py-1 rounded">{sessionId}</span></p>
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6 md:p-8">
-            <h3 className="text-lg font-semibold mb-2">Select your available dates</h3>
+          <h2 className="text-2xl font-bold mb-2 text-zinc-100">Welcome, {username}!</h2>
+          <div className="flex justify-center mb-6">
+            <button
+              className="bg-sky-700 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-sky-600 border border-sky-800 transition text-sm"
+              onClick={() => {
+                if (navigator.clipboard) {
+                  navigator.clipboard.writeText(window.location.href);
+                  setToast("Link copied. Send it to your friends by pasting it in your chats");
+                  setTimeout(() => setToast(""), 3000);
+                }
+              }}
+            >
+              Click to Share
+            </button>
+          </div>
+          {toast && (
+            <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-6 py-3 rounded shadow border border-emerald-800 z-50 animate-fade-in font-semibold text-base">
+              {toast}
+            </div>
+          )}
+          <div className="bg-zinc-800 rounded-lg shadow p-4 sm:p-6 md:p-8 border border-zinc-700">
+            <h3 className="text-lg font-semibold mb-2 text-zinc-100">Select your available dates</h3>
             <div className="flex items-center justify-between mb-2">
               <button
-                className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-lg"
+                className="px-2 py-1 rounded bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-bold text-lg border border-zinc-600"
                 onClick={handlePrevMonth}
                 aria-label="Previous Month"
               >
                 &lt;
               </button>
-              <span className="font-semibold text-base sm:text-lg md:text-xl">
+              <span className="font-semibold text-base sm:text-lg md:text-xl text-zinc-100">
                 {monthNames[calendarMonth]} {calendarYear}
               </span>
               <button
-                className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-lg"
+                className="px-2 py-1 rounded bg-zinc-700 hover:bg-zinc-600 text-zinc-200 font-bold text-lg border border-zinc-600"
                 onClick={handleNextMonth}
                 aria-label="Next Month"
               >
@@ -292,13 +315,13 @@ export default function CalendarSession() {
               </button>
             </div>
             {renderCalendar()}
-            <p className="mt-4 text-xs text-gray-500">Green = everyone available, Blue = you available, Pink = others available</p>
+            <p className="mt-4 text-xs text-zinc-400">Green = everyone available, Blue = you available, Pink = others available</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 sm:p-6 md:p-8 mt-4">
-            <h3 className="text-lg font-semibold mb-2">Users in this session</h3>
+          <div className="bg-zinc-800 rounded-lg shadow p-4 sm:p-6 md:p-8 mt-4 border border-zinc-700">
+            <h3 className="text-lg font-semibold mb-2 text-zinc-100">Users in this session</h3>
             <ul className="mb-2">
               {allUsers.map((user) => (
-                <li key={user} className={`text-sm ${user === username ? "font-bold text-blue-700" : "text-gray-700"}`}>{user}</li>
+                <li key={user} className={`text-sm ${user === username ? "font-bold text-emerald-400" : "text-zinc-200"}`}>{user}</li>
               ))}
             </ul>
           </div>
