@@ -262,7 +262,7 @@ export default function CalendarSession() {
         <>
           <div className="bg-zinc-800 rounded-lg shadow p-4 border border-zinc-700 max-w-md w-full mx-auto mb-6 text-center">
             <p className="text-zinc-200 mb-2">This calendar is <span className="text-emerald-400 font-semibold">sharable via URL</span></p>
-            <p className="text-zinc-400 text-sm">Note: Each calendar is automatically deleted after <span className="text-emerald-300 font-semibold">one week</span></p>
+            <p className="text-zinc-400 text-sm">Each calendar is automatically deleted after <span className="text-emerald-300 font-semibold">one week</span></p>
           </div>
           <form onSubmit={handleSetUsername} className="flex flex-col gap-4 w-full max-w-xs">
             <input
