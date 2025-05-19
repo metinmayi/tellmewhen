@@ -45,6 +45,19 @@ export default function JoinCalendar() {
           </button>
         </form>
       </div>
+      <div className="w-full flex flex-col items-center gap-1 justify-center px-4 pb-2 mt-2">
+        <span className="text-zinc-500 text-xs mt-1">
+          Created by GPT-4.1, co-authored by
+          <a
+            href="https://github.com/metinmayi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-1 underline hover:text-emerald-400 transition-colors"
+          >
+            @metinmayi
+          </a>
+        </span>
+      </div>
     </main>
   );
 }
