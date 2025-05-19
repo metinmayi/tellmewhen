@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
       <div className="w-full max-w-xs flex flex-col items-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-center text-zinc-100 drop-shadow">
-          QuickPick
+          Tell Me When
         </h1>
         <p className="mb-8 text-center text-zinc-300 text-base sm:text-lg">
           No more group chat chaos.
