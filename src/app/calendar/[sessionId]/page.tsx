@@ -259,18 +259,24 @@ export default function CalendarSession() {
         <Link href="/" className="bg-zinc-800 text-zinc-100 px-4 py-2 rounded-lg font-semibold shadow hover:bg-zinc-700 border border-zinc-600 transition text-sm">Home</Link>
       </div>
       {showPrompt ? (
-        <form onSubmit={handleSetUsername} className="flex flex-col gap-4 w-full max-w-xs">
-          <input
-            className="border border-zinc-600 bg-zinc-800 text-zinc-100 rounded px-4 py-2 text-lg placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-sky-700"
-            placeholder="Enter your name"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            required
-          />
-          <button className="bg-emerald-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow hover:bg-emerald-600 border border-emerald-800 transition" type="submit">
-            Join Session
-          </button>
-        </form>
+        <>
+          <div className="bg-zinc-800 rounded-lg shadow p-4 border border-zinc-700 max-w-md w-full mx-auto mb-6 text-center">
+            <p className="text-zinc-200 mb-2">This calendar is <span className="text-emerald-400 font-semibold">sharable via URL</span></p>
+            <p className="text-zinc-400 text-sm">Note: Each calendar is automatically deleted after <span className="text-emerald-300 font-semibold">one week</span></p>
+          </div>
+          <form onSubmit={handleSetUsername} className="flex flex-col gap-4 w-full max-w-xs">
+            <input
+              className="border border-zinc-600 bg-zinc-800 text-zinc-100 rounded px-4 py-2 text-lg placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-sky-700"
+              placeholder="Enter your name"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              required
+            />
+            <button className="bg-emerald-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow hover:bg-emerald-600 border border-emerald-800 transition" type="submit">
+              Join Session
+            </button>
+          </form>
+        </>
       ) : (
         <div className="w-full max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl text-center mx-auto">
           <h2 className="text-2xl font-bold mb-2 text-zinc-100">Welcome, {username}!</h2>
@@ -280,7 +286,7 @@ export default function CalendarSession() {
               onClick={() => {
                 if (navigator.clipboard) {
                   navigator.clipboard.writeText(window.location.href);
-                  setToast("Link copied. Send it to your friends by pasting it in your chats");
+                  setToast("Link copied! No more excuses—time to pick a date");
                   setTimeout(() => setToast(""), 3000);
                 }
               }}
