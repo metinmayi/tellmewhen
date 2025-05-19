@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function JoinCalendar() {
   const [code, setCode] = useState("");
@@ -14,12 +15,12 @@ export default function JoinCalendar() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
       <div className="absolute top-4 left-4">
-        <a
+        <Link
           href="/"
           className="bg-zinc-800 text-zinc-100 px-4 py-2 rounded-lg font-semibold shadow hover:bg-zinc-700 border border-zinc-600 transition text-sm"
         >
           Home
-        </a>
+        </Link>
       </div>
       <div className="w-full max-w-xs flex flex-col items-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-4 text-center text-zinc-100 drop-shadow">
