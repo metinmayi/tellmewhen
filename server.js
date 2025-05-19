@@ -46,7 +46,7 @@ app.prepare().then(() => {
       io.to(sessionId).emit('refresh-availability');
     });
   });
-  console.log(`> Socket.IO ready on ${process.env.SOCKET_URL || `http://localhost:${SOCKET_PORT}`}`);
+  console.log(`SOCKET.IO ready on ${SOCKET_PORT}`);
 });
 
 // @ts-ignore
