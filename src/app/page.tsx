@@ -10,7 +10,7 @@ export default function Home() {
           QuickPick
         </h1>
         <p className="mb-8 text-center text-zinc-300 text-base sm:text-lg">
-          The easiest way to create and join group calendars.
+          No more group chat chaos.
         </p>
         <div className="flex flex-col w-full gap-4">
           <Link
