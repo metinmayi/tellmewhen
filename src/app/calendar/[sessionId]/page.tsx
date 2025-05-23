@@ -241,7 +241,7 @@ export default function CalendarSession() {
       <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
         <div className="w-full max-w-xs text-center">
           <h2 className="text-2xl font-bold mb-2 text-red-500">Calendar Not Found</h2>
-          <p className="mb-6 text-zinc-300">This calendar session does not exist. Sessions get deleted after 7 days.</p>
+          <p className="mb-6 text-zinc-300">This calendar does not exist. Calendars get deleted after 7 days.</p>
           <button
             className="bg-sky-700 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-sky-600 border border-sky-800 transition"
             onClick={() => router.push("/")}
@@ -272,7 +272,7 @@ export default function CalendarSession() {
               required
             />
             <button className="bg-emerald-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow hover:bg-emerald-600 border border-emerald-800 transition" type="submit">
-              Join Session
+              Join Calendar
             </button>
           </form>
         </>
@@ -323,7 +323,7 @@ export default function CalendarSession() {
             <p className="mt-4 text-xs text-zinc-400">Green = everyone available, Blue = you available, Pink = others available</p>
           </div>
           <div className="bg-zinc-800 rounded-lg shadow p-4 sm:p-6 md:p-8 mt-4 border border-zinc-700">
-            <h3 className="text-lg font-semibold mb-2 text-zinc-100">Users in this session</h3>
+            <h3 className="text-lg font-semibold mb-2 text-zinc-100">Users in this calendar</h3>
             <ul className="mb-2">
               {allUsers.map((user) => (
                 <li key={user} className={`text-sm ${user === username ? "font-bold text-emerald-400" : "text-zinc-200"}`}>{user}</li>
