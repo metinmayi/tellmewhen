@@ -24,8 +24,10 @@ export async function POST(_req: NextRequest, props: { params: Promise<{ session
     await db.run("INSERT INTO calendars (id) VALUES (?)", params.sessionId);
     await db.close();
     return NextResponse.json({ success: true });
-  } catch {
+  } catch(error: any) {
     await db.close();
-    return NextResponse.json({ success: false, error: "Calendar already exists" }, { status: 409 });
+    // Log error to server console for debugging
+    console.error("[Calendar Create Error]", error);
+    return NextResponse.json({ success: false, error: error && typeof error === 'object' && 'message' in error ? (error as any).message : "Calendar already exists" }, { status: 412 });
   }
 }

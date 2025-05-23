@@ -7,24 +7,37 @@ export async function POST(req: NextRequest, props: { params: Promise<{ sessionI
   const { date, username, available } = await req.json();
   const db = await openDb();
   await db.exec(
+    `CREATE TABLE IF NOT EXISTS calendars (
+      id TEXT PRIMARY KEY,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`
+  );
+  await db.exec(
+    `PRAGMA foreign_keys = ON;`
+  );
+  await db.exec(
     `CREATE TABLE IF NOT EXISTS availability (
-      sessionId TEXT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      calendar_id TEXT,
       username TEXT,
       date TEXT,
       available INTEGER,
-      PRIMARY KEY (sessionId, username, date)
+      UNIQUE(calendar_id, username, date),
+      FOREIGN KEY (calendar_id) REFERENCES calendars(id) ON DELETE CASCADE
     )`
   );
+  // Get calendar_id for this session
+  const calendar_id = params.sessionId;
   const lowerUsername = username ? username.toLowerCase() : "";
   if (available) {
     await db.run(
-      `INSERT OR REPLACE INTO availability (sessionId, username, date, available) VALUES (?, ?, ?, 1)`,
-      params.sessionId, lowerUsername, date
+      `INSERT OR REPLACE INTO availability (calendar_id, username, date, available) VALUES (?, ?, ?, 1)`,
+      calendar_id, lowerUsername, date
     );
   } else {
     await db.run(
-      `DELETE FROM availability WHERE sessionId = ? AND username = ? AND date = ?`,
-      params.sessionId, lowerUsername, date
+      `DELETE FROM availability WHERE calendar_id = ? AND username = ? AND date = ?`,
+      calendar_id, lowerUsername, date
     );
   }
   await db.close();
@@ -36,17 +49,30 @@ export async function GET(_req: NextRequest, props: { params: Promise<{ sessionI
   const params = await props.params;
   const db = await openDb();
   await db.exec(
+    `CREATE TABLE IF NOT EXISTS calendars (
+      id TEXT PRIMARY KEY,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`
+  );
+  await db.exec(
+    `PRAGMA foreign_keys = ON;`
+  );
+  await db.exec(
     `CREATE TABLE IF NOT EXISTS availability (
-      sessionId TEXT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      calendar_id TEXT,
       username TEXT,
       date TEXT,
       available INTEGER,
-      PRIMARY KEY (sessionId, username, date)
+      UNIQUE(calendar_id, username, date),
+      FOREIGN KEY (calendar_id) REFERENCES calendars(id) ON DELETE CASCADE
     )`
   );
+  // Use sessionId directly as calendar_id
+  const calendar_id = params.sessionId;
   const rows = await db.all(
-    `SELECT username, date FROM availability WHERE sessionId = ? AND available = 1`,
-    params.sessionId
+    `SELECT username, date FROM availability WHERE calendar_id = ? AND available = 1`,
+    calendar_id
   );
   await db.close();
   return NextResponse.json({ availability: rows });
