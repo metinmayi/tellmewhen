@@ -336,7 +336,7 @@ export default function CalendarSession() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="inline-block w-3 h-3 rounded-full bg-sky-700 border border-sky-800"></span>
-                <span className="text-xs text-zinc-400">Youre Available</span>
+                <span className="text-xs text-zinc-400">You&#39;re Available</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="inline-block w-3 h-3 rounded-full bg-yellow-700 border border-yellow-800"></span>
