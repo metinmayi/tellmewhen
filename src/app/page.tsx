@@ -19,12 +19,6 @@ export default function Home() {
           >
             New Calendar
           </Link>
-          <Link
-            href="/join-calendar"
-            className="w-full px-6 py-4 bg-sky-700 text-white rounded-lg text-lg font-semibold shadow hover:bg-sky-600 border border-sky-800 transition text-center"
-          >
-            Join Calendar
-          </Link>
         </div>
       </div>
       <div className="w-full flex flex-col items-center gap-1 justify-center px-4 pb-2 mt-2">
