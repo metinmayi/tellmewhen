@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import logo from "@/assets/tellmewhen-no-bg.svg";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12 bg-zinc-900">
       <div className="w-full max-w-xs flex flex-col items-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-center text-zinc-100 drop-shadow">
-          Tell Me When
-        </h1>
+        <div className="flex items-center justify-center">
+          <Image
+            src={logo}
+            alt="Tell Me When logo"
+            priority
+          />
+        </div>
         <p className="mb-8 text-center text-zinc-300 text-base sm:text-lg">
           No more group chat chaos.
         </p>
