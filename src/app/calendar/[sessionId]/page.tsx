@@ -61,7 +61,7 @@ export default function CalendarSession() {
 
   // Calendar UI logic
   const today = new Date();
-  const [calendar, setCalendar] = useState<Record<string, string[]>>({}); // {date: [usernames]}
+  const [calendar, setCalendar] = useState<Record<string, string[]>>({});
   const [myAvailability, setMyAvailability] = useState<Set<string>>(new Set());
   const [allUsers, setAllUsers] = useState<string[]>([]);
   const [calendarYear, setCalendarYear] = useState<number>(today.getFullYear());
@@ -194,9 +194,9 @@ export default function CalendarSession() {
           } else if (isMe && usersForDate.length === 1) {
             colorClass = "bg-sky-700 text-white border-sky-800";
           } else if (isMe && usersForDate.length > 1) {
-            colorClass = "bg-pink-700 text-white border-pink-800";
+            colorClass = "bg-yellow-700 text-white border-yellow-800";
           } else if (!isMe && usersForDate.length > 0) {
-            colorClass = "bg-pink-700 text-white border-pink-800";
+            colorClass = "bg-yellow-700 text-white border-yellow-800";
           }
           const tooltip = usersForDate.length > 0 ? usersForDate.join(", ") : "No one selected";
           return (
@@ -320,7 +320,22 @@ export default function CalendarSession() {
               </button>
             </div>
             {renderCalendar()}
-            <p className="mt-4 text-xs text-zinc-400">Green = everyone available, Blue = you available, Pink = others available</p>
+            {/* Updated legend with colored dots - mobile friendly */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-4">
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded-full bg-emerald-700 border border-emerald-800"></span>
+                <span className="text-xs text-zinc-400">Everyone Available</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded-full bg-sky-700 border border-sky-800"></span>
+                <span className="text-xs text-zinc-400">Youre Available</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded-full bg-yellow-700 border border-yellow-800"></span>
+                <span className="text-xs text-zinc-400">Others Available</span>
+              </div>
+            </div>
+            {/* End legend */}
           </div>
           <div className="bg-zinc-800 rounded-lg shadow p-4 sm:p-6 md:p-8 mt-4 border border-zinc-700">
             <h3 className="text-lg font-semibold mb-2 text-zinc-100">Users in this calendar</h3>
