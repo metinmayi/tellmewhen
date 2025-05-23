@@ -269,6 +269,7 @@ export default function CalendarSession() {
         <>
           <div className="w-full max-w-md mx-auto mb-6 text-center">
             <p className="text-zinc-400 text-xs sm:text-sm">Each calendar is automatically deleted after <span className="text-emerald-300 font-semibold">one week</span></p>
+            <p className="text-yellow-500 text-xs sm:text-sm mt-2 font-medium">Use a unique username in your group—ideally your real name. If needed, add your last name or initials.</p>
           </div>
           <form onSubmit={handleSetUsername} className="flex flex-col gap-4 w-full max-w-xs">
             <input
