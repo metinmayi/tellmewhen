@@ -46,17 +46,24 @@ export default function CalendarSession() {
 
   function handleSetUsername(e: React.FormEvent) {
     e.preventDefault();
-    setUsername(input);
+    const lowerInput = input.trim().toLowerCase();
+    setUsername(lowerInput);
     setShowPrompt(false);
     if (typeof window !== "undefined") {
-      localStorage.setItem(`qp-username-${sessionId}` , input);
+      localStorage.setItem(`qp-username-${sessionId}` , lowerInput);
     }
     // Add user to calendar immediately after submitting username
     fetch(`/api/calendar/${sessionId}/availability`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date: "__joined__", username: input, available: true }),
+      body: JSON.stringify({ date: "__joined__", username: lowerInput, available: true }),
     });
+  }
+
+  // Helper to capitalize first letter for display
+  function displayName(name: string) {
+    if (!name) return "";
+    return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
   // Calendar UI logic
@@ -278,7 +285,7 @@ export default function CalendarSession() {
         </>
       ) : (
         <div className="w-full max-w-xs sm:max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl text-center mx-auto">
-          <h2 className="text-2xl font-bold mb-2 text-zinc-100">Welcome, {username}!</h2>
+          <h2 className="text-2xl font-bold mb-2 text-zinc-100">Welcome, {displayName(username)}!</h2>
           <div className="flex justify-center mb-6">
             <button
               className="bg-sky-700 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-sky-600 border border-sky-800 transition text-sm"
@@ -341,7 +348,7 @@ export default function CalendarSession() {
             <h3 className="text-lg font-semibold mb-2 text-zinc-100">Users in this calendar</h3>
             <ul className="mb-2">
               {allUsers.map((user) => (
-                <li key={user} className={`text-sm ${user === username ? "font-bold text-emerald-400" : "text-zinc-200"}`}>{user}</li>
+                <li key={user} className={`text-sm ${user === username ? "font-bold text-emerald-400" : "text-zinc-200"}`}>{displayName(user)}</li>
               ))}
             </ul>
           </div>

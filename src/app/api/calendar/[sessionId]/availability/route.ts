@@ -15,15 +15,16 @@ export async function POST(req: NextRequest, props: { params: Promise<{ sessionI
       PRIMARY KEY (sessionId, username, date)
     )`
   );
+  const lowerUsername = username ? username.toLowerCase() : "";
   if (available) {
     await db.run(
       `INSERT OR REPLACE INTO availability (sessionId, username, date, available) VALUES (?, ?, ?, 1)`,
-      params.sessionId, username, date
+      params.sessionId, lowerUsername, date
     );
   } else {
     await db.run(
       `DELETE FROM availability WHERE sessionId = ? AND username = ? AND date = ?`,
-      params.sessionId, username, date
+      params.sessionId, lowerUsername, date
     );
   }
   await db.close();
