@@ -5,4 +5,4 @@
 DB_PATH="database.sqlite"
 
 # Delete all entries from the 'calendar' table older than one minute (requires a 'created_at' column of type DATETIME)
-sqlite3 "$DB_PATH" "PRAGMA foreign_keys = ON; DELETE FROM calendar WHERE created_at < datetime('now', '-1 minute');"
+sqlite3 "$DB_PATH" "PRAGMA foreign_keys = ON; DELETE FROM calendars WHERE createdAt < datetime('now', '-1 week');"
